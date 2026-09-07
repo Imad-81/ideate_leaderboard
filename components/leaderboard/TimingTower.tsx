@@ -103,9 +103,8 @@ export function TimingTower({ entries, isFullscreen = false }: TimingTowerProps)
       <div className="mb-3 hidden sm:grid sm:grid-cols-12 items-center px-4 py-2 font-mono text-xs uppercase tracking-widest text-neutral-400 border-b border-neutral-800">
         <div className="col-span-1 text-center font-bold">POS</div>
         <div className="col-span-1 text-center">CHG</div>
-        <div className="col-span-5 xl:col-span-4 pl-2">DRIVER / TEAM</div>
-        <div className="col-span-2 hidden xl:block">CAR</div>
-        <div className="col-span-3 xl:col-span-2 text-right pr-2">BEST TIME</div>
+        <div className="col-span-5 pl-2">DRIVER / TEAM</div>
+        <div className="col-span-3 text-right pr-2">BEST TIME</div>
         <div className="col-span-2 text-right">GAP</div>
       </div>
 
@@ -169,7 +168,7 @@ export function TimingTower({ entries, isFullscreen = false }: TimingTowerProps)
                   </div>
 
                   {/* Driver Name, Team, & Driver Avatar */}
-                  <div className="col-span-5 xl:col-span-4 flex items-center gap-3 pl-2 min-w-0">
+                  <div className="col-span-5 flex items-center gap-3 pl-2 min-w-0">
                     <CarImageFallback
                       src={item.driverImageUrl}
                       alt={item.participantName}
@@ -202,22 +201,8 @@ export function TimingTower({ entries, isFullscreen = false }: TimingTowerProps)
                     </div>
                   </div>
 
-                  {/* Car Thumbnail (Large screens) */}
-                  <div className="col-span-2 hidden xl:flex items-center">
-                    {item.carImageUrl ? (
-                      <CarImageFallback
-                        src={item.carImageUrl}
-                        alt={`${item.participantName} car`}
-                        type="car"
-                        containerClassName="h-10 w-24 rounded border border-neutral-800 bg-neutral-900 overflow-hidden"
-                      />
-                    ) : (
-                      <span className="font-mono text-xs text-neutral-600 italic">No car visual</span>
-                    )}
-                  </div>
-
                   {/* Lap Time */}
-                  <div className="col-span-3 xl:col-span-2 text-right pr-2">
+                  <div className="col-span-3 text-right pr-2">
                     <div
                       className={`font-mono font-black tracking-tight ${
                         isP1
