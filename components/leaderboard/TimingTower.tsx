@@ -103,10 +103,10 @@ export function TimingTower({ entries, isFullscreen = false }: TimingTowerProps)
       <div className="mb-3 hidden sm:grid sm:grid-cols-12 items-center px-4 py-2 font-mono text-xs uppercase tracking-widest text-neutral-400 border-b border-neutral-800">
         <div className="col-span-1 text-center font-bold">POS</div>
         <div className="col-span-1 text-center">CHG</div>
-        <div className="col-span-4 lg:col-span-5 pl-2">DRIVER / TEAM</div>
-        <div className="col-span-2 hidden lg:block">CAR</div>
-        <div className="col-span-3 lg:col-span-2 text-right pr-2">BEST TIME</div>
-        <div className="col-span-2 lg:col-span-1 text-right">GAP</div>
+        <div className="col-span-5 xl:col-span-4 pl-2">DRIVER / TEAM</div>
+        <div className="col-span-2 hidden xl:block">CAR</div>
+        <div className="col-span-3 xl:col-span-2 text-right pr-2">BEST TIME</div>
+        <div className="col-span-2 text-right">GAP</div>
       </div>
 
       {/* Row List with Framer Motion Layout Animations */}
@@ -169,7 +169,7 @@ export function TimingTower({ entries, isFullscreen = false }: TimingTowerProps)
                   </div>
 
                   {/* Driver Name, Team, & Driver Avatar */}
-                  <div className="col-span-4 lg:col-span-5 flex items-center gap-3 pl-2 min-w-0">
+                  <div className="col-span-5 xl:col-span-4 flex items-center gap-3 pl-2 min-w-0">
                     <CarImageFallback
                       src={item.driverImageUrl}
                       alt={item.participantName}
@@ -203,7 +203,7 @@ export function TimingTower({ entries, isFullscreen = false }: TimingTowerProps)
                   </div>
 
                   {/* Car Thumbnail (Large screens) */}
-                  <div className="col-span-2 hidden lg:flex items-center">
+                  <div className="col-span-2 hidden xl:flex items-center">
                     {item.carImageUrl ? (
                       <CarImageFallback
                         src={item.carImageUrl}
@@ -217,7 +217,7 @@ export function TimingTower({ entries, isFullscreen = false }: TimingTowerProps)
                   </div>
 
                   {/* Lap Time */}
-                  <div className="col-span-3 lg:col-span-2 text-right pr-2">
+                  <div className="col-span-3 xl:col-span-2 text-right pr-2">
                     <div
                       className={`font-mono font-black tracking-tight ${
                         isP1
@@ -234,7 +234,7 @@ export function TimingTower({ entries, isFullscreen = false }: TimingTowerProps)
                   </div>
 
                   {/* Gap */}
-                  <div className="col-span-2 lg:col-span-1 text-right">
+                  <div className="col-span-2 text-right">
                     <span
                       className={`font-mono font-bold ${
                         isP1

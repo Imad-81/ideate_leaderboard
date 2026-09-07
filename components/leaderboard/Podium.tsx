@@ -33,17 +33,13 @@ export function Podium({ entries }: PodiumProps) {
     return (
       <div
         className={`relative overflow-hidden rounded-2xl ${borderStyle} bg-neutral-950/90 shadow-2xl backdrop-blur-md flex flex-col transition-all duration-300 hover:scale-[1.01] ${
-          isP1
-            ? "order-1 md:order-2 md:-translate-y-6 lg:-translate-y-8 z-10 glow-red-blue ring-1 ring-red-500/30"
-            : pos === 2
-            ? "order-2 md:order-1"
-            : "order-3"
+          isP1 ? "glow-red-blue ring-1 ring-red-500/30" : ""
         }`}
       >
         {/* Prominent Hero Image Container */}
         <div
           className={`relative w-full bg-neutral-900 overflow-hidden ${
-            isP1 ? "h-72 sm:h-84 md:h-96 lg:h-[420px]" : "h-56 sm:h-64 md:h-72"
+            isP1 ? "h-64 sm:h-72 lg:h-80" : "h-44 sm:h-52"
           }`}
         >
           <CarImageFallback
@@ -85,15 +81,15 @@ export function Podium({ entries }: PodiumProps) {
         {/* Info Area: Name & Time Only */}
         <div
           className={`flex flex-col justify-between flex-1 ${
-            isP1 ? "p-6 sm:p-7 pt-5" : "p-5 sm:p-6 pt-4"
+            isP1 ? "p-6 sm:p-7 pt-5" : "p-4 sm:p-5 pt-3"
           }`}
         >
           {/* Driver Name - Fully bold & prominent */}
           <h3
-            className={`font-mono font-black uppercase tracking-tight text-white leading-tight mb-3 break-words ${
+            className={`font-mono font-black uppercase tracking-tight text-white leading-tight mb-2 break-words ${
               isP1
-                ? "text-3xl sm:text-4xl lg:text-5xl"
-                : "text-2xl sm:text-3xl"
+                ? "text-2xl sm:text-3xl lg:text-4xl"
+                : "text-xl sm:text-2xl"
             }`}
             style={{ fontFamily: "var(--font-racing), var(--font-mono)" }}
           >
@@ -101,10 +97,10 @@ export function Podium({ entries }: PodiumProps) {
           </h3>
 
           {/* Time - Giant, bold & high-contrast */}
-          <div className="pt-3 border-t border-neutral-800/80 flex items-baseline">
+          <div className="pt-2 border-t border-neutral-800/80 flex items-baseline">
             <div
               className={`font-mono font-black tracking-tight ${timeGradient} ${
-                isP1 ? "text-5xl sm:text-6xl" : "text-3xl sm:text-4xl"
+                isP1 ? "text-4xl sm:text-5xl" : "text-2xl sm:text-3xl"
               }`}
               style={{ fontFamily: "var(--font-racing), var(--font-mono)" }}
             >
@@ -117,8 +113,20 @@ export function Podium({ entries }: PodiumProps) {
   };
 
   return (
-    <div className="mb-10 pt-6 sm:pt-10">
-      <div className="grid grid-cols-1 md:grid-cols-[1fr_1.25fr_1fr] gap-6 items-end">
+    <div className="space-y-4 sm:space-y-5">
+      {/* P1 Champion Hero Card (Bigger, Crown Position) */}
+      {renderCard(
+        p1,
+        1,
+        "P1",
+        true,
+        "border-2 border-red-500/90 shadow-2xl",
+        "h-10 px-3.5 text-base bg-gradient-to-r from-red-600 via-purple-600 to-blue-600 text-white rounded-xl shadow-red-600/50",
+        "text-transparent bg-clip-text bg-gradient-to-r from-red-400 via-purple-200 to-blue-400 drop-shadow-[0_0_20px_rgba(225,6,0,0.6)]"
+      )}
+
+      {/* P2 & P3 Sub-Podium (Side by Side beneath P1) */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
         {/* P2 (Left) */}
         {renderCard(
           p2,
@@ -128,17 +136,6 @@ export function Podium({ entries }: PodiumProps) {
           "border border-blue-500/50 shadow-blue-950/30 hover:border-blue-400",
           "h-8 px-2.5 text-xs bg-blue-600 text-white rounded-lg shadow-blue-600/40",
           "text-blue-100"
-        )}
-
-        {/* P1 (Center, Elevated & Bigger) */}
-        {renderCard(
-          p1,
-          1,
-          "P1",
-          true,
-          "border-2 border-red-500/90 shadow-2xl",
-          "h-11 px-4 text-base bg-gradient-to-r from-red-600 via-purple-600 to-blue-600 text-white rounded-xl shadow-red-600/50",
-          "text-transparent bg-clip-text bg-gradient-to-r from-red-400 via-purple-200 to-blue-400 drop-shadow-[0_0_20px_rgba(225,6,0,0.6)]"
         )}
 
         {/* P3 (Right) */}

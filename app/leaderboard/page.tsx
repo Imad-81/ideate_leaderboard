@@ -89,8 +89,8 @@ export default function LeaderboardPage() {
       <AnimatedBackground />
 
       <div>
-        {/* Main Leaderboard Board Container */}
-        <main className="relative z-10 mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+        {/* Main Leaderboard Board Container - Split Screen Broadcast View */}
+        <main className="relative z-10 mx-auto max-w-[1700px] w-full px-4 py-8 sm:px-6 lg:px-8">
           {data === undefined ? (
             /* High-tech Loading State */
             <div className="flex min-h-[450px] flex-col items-center justify-center gap-4">
@@ -106,20 +106,24 @@ export default function LeaderboardPage() {
             /* Empty State */
             <EmptyState />
           ) : (
-            /* Active Live Board */
-            <div>
-              {/* Podium Section (P2 - P1 - P3) */}
-              <Podium entries={leaderboardEntries} />
+            /* Active Live Board: Left (Podium) & Right (Leaderboard) */
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
+              {/* Podium Section (Left) */}
+              <div className="lg:col-span-5 xl:col-span-5 2xl:col-span-5">
+                <Podium entries={leaderboardEntries} />
+              </div>
 
-              {/* Timing Tower Table */}
-              <div className="relative overflow-hidden rounded-2xl border border-neutral-800/90 bg-neutral-950/70 p-4 sm:p-6 shadow-2xl backdrop-blur-md">
-                {/* Top dual red-to-blue racing laser line with streaming animation */}
-                <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-red-600 via-purple-600 to-blue-500 shadow-[0_0_12px_rgba(0,102,255,0.6)] laser-gradient-animated" />
+              {/* Timing Tower Leaderboard (Right) */}
+              <div className="lg:col-span-7 xl:col-span-7 2xl:col-span-7">
+                <div className="relative overflow-hidden rounded-2xl border border-neutral-800/90 bg-neutral-950/70 p-4 sm:p-6 shadow-2xl backdrop-blur-md">
+                  {/* Top dual red-to-blue racing laser line with streaming animation */}
+                  <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-red-600 via-purple-600 to-blue-500 shadow-[0_0_12px_rgba(0,102,255,0.6)] laser-gradient-animated" />
 
-                <TimingTower
-                  entries={leaderboardEntries}
-                  isFullscreen={isFullscreen}
-                />
+                  <TimingTower
+                    entries={leaderboardEntries}
+                    isFullscreen={isFullscreen}
+                  />
+                </div>
               </div>
             </div>
           )}
@@ -128,7 +132,7 @@ export default function LeaderboardPage() {
 
       {/* Bottom Telemetry Ticker / Status Bar */}
       <footer className="mt-8 border-t border-neutral-800/80 bg-neutral-950/90 py-3 backdrop-blur-md">
-        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 px-4 font-mono text-[11px] text-neutral-400 sm:px-6 lg:px-8">
+        <div className="mx-auto flex max-w-[1700px] w-full flex-wrap items-center justify-between gap-4 px-4 font-mono text-[11px] text-neutral-400 sm:px-6 lg:px-8">
           <div className="flex items-center gap-4">
             <span className="flex items-center gap-1.5 text-neutral-300 font-semibold">
               <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
