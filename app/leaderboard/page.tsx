@@ -9,6 +9,7 @@ import { Podium } from "@/components/leaderboard/Podium";
 import { TimingTower } from "@/components/leaderboard/TimingTower";
 import { NewFastestLapAlert } from "@/components/leaderboard/NewFastestLapAlert";
 import { EmptyState } from "@/components/leaderboard/EmptyState";
+import { AnimatedBackground } from "@/components/common/AnimatedBackground";
 import { Maximize2, Minimize2, SlidersHorizontal, Activity } from "lucide-react";
 
 export default function LeaderboardPage() {
@@ -84,10 +85,8 @@ export default function LeaderboardPage() {
         </Link>
       </div>
 
-      {/* Dynamic Ambient Background Glows: Crimson Red (Left) and Electric Sapphire Blue (Right) */}
-      <div className="pointer-events-none fixed -top-40 -left-40 h-[600px] w-[600px] rounded-full bg-red-600/10 blur-[150px]" />
-      <div className="pointer-events-none fixed -top-40 -right-40 h-[600px] w-[600px] rounded-full bg-blue-600/15 blur-[160px]" />
-      <div className="pointer-events-none fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[700px] w-[700px] rounded-full bg-indigo-950/20 blur-[180px]" />
+      {/* Dynamic Animated Ambient Background Glows */}
+      <AnimatedBackground />
 
       <div>
         {/* Main Leaderboard Board Container */}
@@ -114,8 +113,8 @@ export default function LeaderboardPage() {
 
               {/* Timing Tower Table */}
               <div className="relative overflow-hidden rounded-2xl border border-neutral-800/90 bg-neutral-950/70 p-4 sm:p-6 shadow-2xl backdrop-blur-md">
-                {/* Top dual red-to-blue racing laser line */}
-                <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-red-600 via-purple-600 to-blue-500 shadow-[0_0_12px_rgba(0,102,255,0.6)]" />
+                {/* Top dual red-to-blue racing laser line with streaming animation */}
+                <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-red-600 via-purple-600 to-blue-500 shadow-[0_0_12px_rgba(0,102,255,0.6)] laser-gradient-animated" />
 
                 <TimingTower
                   entries={leaderboardEntries}

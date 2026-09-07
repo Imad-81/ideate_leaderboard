@@ -7,13 +7,15 @@ import { GridStats } from "@/lib/types";
 import { AdminHeader } from "@/components/admin/AdminHeader";
 import { ResultForm } from "@/components/admin/ResultForm";
 import { ResultsManagementTable } from "@/components/admin/ResultsManagementTable";
+import { AnimatedBackground } from "@/components/common/AnimatedBackground";
 
 export default function AdminPage() {
   const stats = useQuery(api.results.getStats) as GridStats | undefined;
 
   return (
-    <div className="min-h-screen bg-carbon-pattern flex flex-col justify-between text-neutral-100">
-      <div>
+    <div className="min-h-screen bg-carbon-pattern flex flex-col justify-between text-neutral-100 relative">
+      <AnimatedBackground />
+      <div className="relative z-10">
         {/* Race Control Header */}
         <AdminHeader stats={stats} />
 
