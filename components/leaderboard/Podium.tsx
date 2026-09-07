@@ -34,20 +34,28 @@ export function Podium({ entries }: PodiumProps) {
       <div
         className={`relative overflow-hidden rounded-2xl ${borderStyle} bg-neutral-950/90 shadow-2xl backdrop-blur-md flex flex-col transition-all duration-300 hover:scale-[1.01] ${
           isP1
-            ? "order-1 md:order-2 md:-translate-y-4 z-10 glow-red-blue"
+            ? "order-1 md:order-2 md:-translate-y-6 lg:-translate-y-8 z-10 glow-red-blue ring-1 ring-red-500/30"
             : pos === 2
             ? "order-2 md:order-1"
             : "order-3"
         }`}
       >
         {/* Prominent Hero Image Container */}
-        <div className="relative w-full h-64 sm:h-72 md:h-80 bg-neutral-900 overflow-hidden">
+        <div
+          className={`relative w-full bg-neutral-900 overflow-hidden ${
+            isP1 ? "h-72 sm:h-84 md:h-96 lg:h-[420px]" : "h-56 sm:h-64 md:h-72"
+          }`}
+        >
           <CarImageFallback
             src={imageUrl}
             alt={entry.participantName}
             type={entry.carImageUrl && !entry.driverImageUrl ? "car" : "driver"}
             containerClassName="w-full h-full"
-            iconClassName="h-20 w-20 stroke-neutral-600 group-hover:stroke-red-500"
+            iconClassName={
+              isP1
+                ? "h-24 w-24 sm:h-28 sm:w-28 stroke-neutral-600 group-hover:stroke-red-500"
+                : "h-16 w-16 sm:h-20 sm:w-20 stroke-neutral-600 group-hover:stroke-blue-500"
+            }
             className="w-full h-full object-cover object-top transition-transform duration-500 hover:scale-105"
           />
 
@@ -75,10 +83,18 @@ export function Podium({ entries }: PodiumProps) {
         </div>
 
         {/* Info Area: Name & Time Only */}
-        <div className="p-6 pt-4 flex flex-col justify-between flex-1">
+        <div
+          className={`flex flex-col justify-between flex-1 ${
+            isP1 ? "p-6 sm:p-7 pt-5" : "p-5 sm:p-6 pt-4"
+          }`}
+        >
           {/* Driver Name - Fully bold & prominent */}
           <h3
-            className="font-mono font-black uppercase tracking-tight text-white text-2xl sm:text-3xl leading-tight mb-3 break-words"
+            className={`font-mono font-black uppercase tracking-tight text-white leading-tight mb-3 break-words ${
+              isP1
+                ? "text-3xl sm:text-4xl lg:text-5xl"
+                : "text-2xl sm:text-3xl"
+            }`}
             style={{ fontFamily: "var(--font-racing), var(--font-mono)" }}
           >
             {entry.participantName}
@@ -88,7 +104,7 @@ export function Podium({ entries }: PodiumProps) {
           <div className="pt-3 border-t border-neutral-800/80 flex items-baseline">
             <div
               className={`font-mono font-black tracking-tight ${timeGradient} ${
-                isP1 ? "text-4xl sm:text-5xl" : "text-3xl sm:text-4xl"
+                isP1 ? "text-5xl sm:text-6xl" : "text-3xl sm:text-4xl"
               }`}
               style={{ fontFamily: "var(--font-racing), var(--font-mono)" }}
             >
@@ -101,8 +117,8 @@ export function Podium({ entries }: PodiumProps) {
   };
 
   return (
-    <div className="mb-10 pt-4">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-end">
+    <div className="mb-10 pt-6 sm:pt-10">
+      <div className="grid grid-cols-1 md:grid-cols-[1fr_1.25fr_1fr] gap-6 items-end">
         {/* P2 (Left) */}
         {renderCard(
           p2,
@@ -110,19 +126,19 @@ export function Podium({ entries }: PodiumProps) {
           "P2",
           false,
           "border border-blue-500/50 shadow-blue-950/30 hover:border-blue-400",
-          "h-9 px-3 text-sm bg-blue-600 text-white rounded-xl shadow-blue-600/40",
+          "h-8 px-2.5 text-xs bg-blue-600 text-white rounded-lg shadow-blue-600/40",
           "text-blue-100"
         )}
 
-        {/* P1 (Center, Elevated) */}
+        {/* P1 (Center, Elevated & Bigger) */}
         {renderCard(
           p1,
           1,
           "P1",
           true,
           "border-2 border-red-500/90 shadow-2xl",
-          "h-10 px-3.5 text-base bg-gradient-to-r from-red-600 via-purple-600 to-blue-600 text-white rounded-xl shadow-red-600/50",
-          "text-transparent bg-clip-text bg-gradient-to-r from-red-400 via-purple-200 to-blue-400 drop-shadow-[0_0_15px_rgba(0,102,255,0.6)]"
+          "h-11 px-4 text-base bg-gradient-to-r from-red-600 via-purple-600 to-blue-600 text-white rounded-xl shadow-red-600/50",
+          "text-transparent bg-clip-text bg-gradient-to-r from-red-400 via-purple-200 to-blue-400 drop-shadow-[0_0_20px_rgba(225,6,0,0.6)]"
         )}
 
         {/* P3 (Right) */}
@@ -132,7 +148,7 @@ export function Podium({ entries }: PodiumProps) {
           "P3",
           false,
           "border border-neutral-800 shadow-neutral-950/40 hover:border-neutral-700",
-          "h-9 px-3 text-sm bg-neutral-800 border border-neutral-700 text-amber-400 rounded-xl shadow-neutral-900/50",
+          "h-8 px-2.5 text-xs bg-neutral-800 border border-neutral-700 text-amber-400 rounded-lg shadow-neutral-900/50",
           "text-neutral-100"
         )}
       </div>
