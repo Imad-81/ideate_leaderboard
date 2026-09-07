@@ -192,15 +192,13 @@ export function TimingTower({ entries, isFullscreen = false }: TimingTowerProps)
                         {renderStatusBadge(item.status)}
                       </div>
 
-                      <div className="flex items-center gap-2 font-mono text-xs text-neutral-400">
-                        <span className="truncate">{item.teamName || "Independent"}</span>
-                        {item.runNumber && (
-                          <>
-                            <span className="text-neutral-600">•</span>
-                            <span className="text-neutral-400">R#{item.runNumber}</span>
-                          </>
-                        )}
-                      </div>
+                      {(item.teamName || item.runNumber) && (
+                        <div className="flex items-center gap-2 font-mono text-xs text-neutral-400">
+                          {item.teamName && <span className="truncate">{item.teamName}</span>}
+                          {item.teamName && item.runNumber && <span className="text-neutral-600">•</span>}
+                          {item.runNumber && <span className="text-neutral-400">R#{item.runNumber}</span>}
+                        </div>
+                      )}
                     </div>
                   </div>
 
@@ -277,9 +275,11 @@ export function TimingTower({ entries, isFullscreen = false }: TimingTowerProps)
                         >
                           {item.participantName}
                         </h4>
-                        <span className="font-mono text-xs text-neutral-400">
-                          {item.teamName || "Independent"}
-                        </span>
+                        {item.teamName && (
+                          <span className="font-mono text-xs text-neutral-400">
+                            {item.teamName}
+                          </span>
+                        )}
                       </div>
                     </div>
                     <div>{renderStatusBadge(item.status)}</div>

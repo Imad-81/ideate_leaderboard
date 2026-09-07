@@ -92,9 +92,11 @@ export function NewFastestLapAlert({ fastestDriver }: NewFastestLapAlertProps) {
                 >
                   {activeDriver.participantName}
                 </h3>
-                <p className="font-mono text-xs text-neutral-400">
-                  {activeDriver.teamName || "Independent Competitor"}
-                </p>
+                {activeDriver.teamName && (
+                  <p className="font-mono text-xs text-neutral-400">
+                    {activeDriver.teamName}
+                  </p>
+                )}
               </div>
 
               <div className="text-right">

@@ -63,9 +63,11 @@ export function Podium({ entries }: PodiumProps) {
               >
                 {p2.participantName}
               </h4>
-              <p className="truncate font-mono text-xs text-neutral-400">
-                {p2.teamName || "Privateer"}
-              </p>
+              {p2.teamName && (
+                <p className="truncate font-mono text-xs text-neutral-400">
+                  {p2.teamName}
+                </p>
+              )}
             </div>
           </div>
 
@@ -138,9 +140,11 @@ export function Podium({ entries }: PodiumProps) {
               >
                 {p1.participantName}
               </h4>
-              <p className="truncate font-mono text-xs font-semibold text-red-400">
-                {p1.teamName || "Privateer Entry"}
-              </p>
+              {p1.teamName && (
+                <p className="truncate font-mono text-xs font-semibold text-red-400">
+                  {p1.teamName}
+                </p>
+              )}
             </div>
           </div>
 
@@ -198,9 +202,11 @@ export function Podium({ entries }: PodiumProps) {
               >
                 {p3.participantName}
               </h4>
-              <p className="truncate font-mono text-xs text-neutral-400">
-                {p3.teamName || "Privateer"}
-              </p>
+              {p3.teamName && (
+                <p className="truncate font-mono text-xs text-neutral-400">
+                  {p3.teamName}
+                </p>
+              )}
             </div>
           </div>
 
