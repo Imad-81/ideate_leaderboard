@@ -11,6 +11,7 @@ import { NewFastestLapAlert } from "@/components/leaderboard/NewFastestLapAlert"
 import { EmptyState } from "@/components/leaderboard/EmptyState";
 import { AnimatedBackground } from "@/components/common/AnimatedBackground";
 import { Maximize2, Minimize2, SlidersHorizontal, Activity } from "lucide-react";
+import { BrandCredit } from "@/components/common/BrandCredit";
 
 export default function LeaderboardPage() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -109,8 +110,11 @@ export default function LeaderboardPage() {
             /* Active Live Board: Left (Podium - Centered & Wide) & Right (Leaderboard) */
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-center min-h-[calc(100vh-180px)]">
               {/* Podium Section (Left - Wider & Vertically Centralized) */}
-              <div className="lg:col-span-6 xl:col-span-6 2xl:col-span-6 w-full flex flex-col justify-center py-4 lg:py-6">
+              <div className="lg:col-span-6 xl:col-span-6 2xl:col-span-6 w-full flex flex-col justify-center items-center py-4 lg:py-6">
                 <Podium entries={leaderboardEntries} />
+                <div className="mt-6 sm:mt-8 flex justify-center w-full">
+                  <BrandCredit />
+                </div>
               </div>
 
               {/* Timing Tower Leaderboard (Right) */}

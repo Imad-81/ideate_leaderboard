@@ -8,6 +8,7 @@ import { AdminHeader } from "@/components/admin/AdminHeader";
 import { ResultForm } from "@/components/admin/ResultForm";
 import { ResultsManagementTable } from "@/components/admin/ResultsManagementTable";
 import { AnimatedBackground } from "@/components/common/AnimatedBackground";
+import { BrandCredit } from "@/components/common/BrandCredit";
 
 export default function AdminPage() {
   const stats = useQuery(api.results.getStats) as GridStats | undefined;
@@ -31,8 +32,12 @@ export default function AdminPage() {
 
       {/* Footer */}
       <footer className="mt-12 border-t border-neutral-800/80 bg-neutral-950/90 py-4 backdrop-blur-md">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 font-mono text-[11px] text-neutral-400 sm:px-6 lg:px-8">
+        <div className="relative mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 px-4 font-mono text-[11px] text-neutral-400 sm:px-6 lg:px-8">
           <div>OFFICIAL RACE CONTROL CONSOLE • RESTRICTED MARSHAL DESK</div>
+          {/* Bottom Center Credit */}
+          <div className="w-full sm:w-auto sm:absolute sm:left-1/2 sm:-translate-x-1/2 flex justify-center order-last sm:order-none">
+            <BrandCredit layout="horizontal" />
+          </div>
           <div className="text-red-400">TELEMETRY SECURE</div>
         </div>
       </footer>
