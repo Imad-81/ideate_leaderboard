@@ -30,15 +30,16 @@ export function Podium({ entries }: PodiumProps) {
     imageHeight: string,
     pedestalHeight: string,
     watermarkNum: string,
-    accentLineColor: string
+    accentLineColor: string,
+    offsetClass: string
   ) => {
     const imageUrl = entry.driverImageUrl || entry.carImageUrl;
 
     return (
       <div
-        className={`relative flex flex-col overflow-hidden rounded-t-2xl ${borderStyle} bg-neutral-950/95 shadow-2xl backdrop-blur-md transition-all duration-300 hover:scale-[1.015] ${
+        className={`relative flex flex-col overflow-hidden rounded-2xl ${borderStyle} bg-neutral-950/95 shadow-2xl backdrop-blur-md transition-all duration-300 hover:scale-[1.015] ${
           isP1 ? "glow-red-blue ring-1 ring-red-500/40 z-10" : "z-0"
-        }`}
+        } ${offsetClass}`}
       >
         {/* Driver Hero Portrait on the Step */}
         <div className={`relative w-full ${imageHeight} bg-neutral-900 overflow-hidden`}>
@@ -80,7 +81,7 @@ export function Podium({ entries }: PodiumProps) {
 
         {/* Podium Pedestal Step Block */}
         <div
-          className={`relative flex flex-col justify-between ${pedestalHeight} p-3 sm:p-4 md:p-5 bg-gradient-to-b from-neutral-900/90 to-neutral-950 border-t ${accentLineColor} overflow-hidden`}
+          className={`relative flex flex-col justify-between ${pedestalHeight} p-3 sm:p-4 md:p-5 bg-gradient-to-b from-neutral-900/90 to-neutral-950 border-t ${accentLineColor} overflow-hidden rounded-b-2xl`}
         >
           {/* Giant Step Number Watermark */}
           <div
@@ -127,10 +128,10 @@ export function Podium({ entries }: PodiumProps) {
   };
 
   return (
-    <div className="w-full">
-      {/* 3 Stepped Podium Columns: P2 (Medium) - P1 (Tallest) - P3 (Lowest) */}
-      <div className="grid grid-cols-[1fr_1.22fr_1fr] items-end gap-3 sm:gap-4 md:gap-5">
-        {/* P2 Step (Left - Medium Height) */}
+    <div className="w-full pb-16 sm:pb-24">
+      {/* 3 Stepped Podium Columns with staggered top AND bottom levels */}
+      <div className="grid grid-cols-[1fr_1.22fr_1fr] items-start gap-3 sm:gap-4 md:gap-5">
+        {/* P2 Step (Left - Stepped down from P1 at top & bottom) */}
         {renderPodiumStep(
           p2,
           2,
@@ -142,10 +143,11 @@ export function Podium({ entries }: PodiumProps) {
           "h-48 sm:h-56 md:h-64 lg:h-72",
           "h-32 sm:h-36 md:h-40",
           "2",
-          "border-blue-500/60"
+          "border-blue-500/60",
+          "translate-y-8 sm:translate-y-10 md:translate-y-12"
         )}
 
-        {/* P1 Step (Center - Tallest Elevation, Crown) */}
+        {/* P1 Step (Center - Highest at top & bottom) */}
         {renderPodiumStep(
           p1,
           1,
@@ -157,10 +159,11 @@ export function Podium({ entries }: PodiumProps) {
           "h-60 sm:h-72 md:h-80 lg:h-92",
           "h-40 sm:h-44 md:h-48",
           "1",
-          "border-red-500/80 shadow-[0_0_12px_rgba(225,6,0,0.5)]"
+          "border-red-500/80 shadow-[0_0_12px_rgba(225,6,0,0.5)]",
+          "translate-y-0"
         )}
 
-        {/* P3 Step (Right - Lowest Height) */}
+        {/* P3 Step (Right - Stepped down further at top & bottom) */}
         {renderPodiumStep(
           p3,
           3,
@@ -172,21 +175,9 @@ export function Podium({ entries }: PodiumProps) {
           "h-40 sm:h-48 md:h-52 lg:h-60",
           "h-28 sm:h-32 md:h-36",
           "3",
-          "border-amber-600/60"
+          "border-amber-600/60",
+          "translate-y-16 sm:translate-y-20 md:translate-y-24"
         )}
-      </div>
-
-      {/* Ground Platform Base */}
-      <div className="relative mt-1.5 rounded-b-xl border-x border-b border-neutral-800 bg-neutral-950/90 px-3 py-2 text-center shadow-xl backdrop-blur-md overflow-hidden">
-        {/* Top neon racing laser line connecting all three steps */}
-        <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-blue-500 via-red-500 to-amber-500 shadow-[0_0_10px_rgba(225,6,0,0.5)]" />
-        <div className="flex items-center justify-between font-mono text-[9px] sm:text-[10px] tracking-wider text-neutral-400 uppercase">
-          <span className="text-blue-400 font-bold">2ND • SILVER</span>
-          <span className="font-black text-transparent bg-clip-text bg-gradient-to-r from-red-400 via-purple-300 to-blue-300">
-            APEX PODIUM
-          </span>
-          <span className="text-amber-400 font-bold">3RD • BRONZE</span>
-        </div>
       </div>
     </div>
   );
