@@ -97,9 +97,7 @@ export function Podium({ entries }: PodiumProps) {
               className={`font-mono font-black uppercase tracking-tight text-white leading-tight break-words ${
                 isP1
                   ? "text-lg sm:text-2xl md:text-3xl"
-                  : pos === 2
-                  ? "text-sm sm:text-lg md:text-xl"
-                  : "text-xs sm:text-base md:text-lg"
+                  : "text-base sm:text-xl md:text-2xl"
               }`}
               style={{ fontFamily: "var(--font-racing), var(--font-mono)" }}
             >
@@ -113,9 +111,7 @@ export function Podium({ entries }: PodiumProps) {
               className={`font-mono font-black tracking-tight ${timeGradient} ${
                 isP1
                   ? "text-2xl sm:text-3xl md:text-4xl lg:text-5xl"
-                  : pos === 2
-                  ? "text-lg sm:text-2xl md:text-3xl"
-                  : "text-base sm:text-xl md:text-2xl"
+                  : "text-xl sm:text-2xl md:text-3xl lg:text-4xl"
               }`}
               style={{ fontFamily: "var(--font-racing), var(--font-mono)" }}
             >
@@ -127,11 +123,18 @@ export function Podium({ entries }: PodiumProps) {
     );
   };
 
+  const commonImageHeight = "h-52 sm:h-60 md:h-68 lg:h-76";
+  const commonPedestalHeight = "h-36 sm:h-40 md:h-44";
+
   return (
-    <div className="w-full pb-16 sm:pb-24">
-      {/* 3 Stepped Podium Columns with staggered top AND bottom levels */}
+    <div className="w-full pb-24 sm:pb-32 lg:pb-36">
+      {/* 3 Stepped Podium Columns:
+          P1 is highest at both top and bottom.
+          P2 (second) is lower than P1 at both top and bottom.
+          P3 (third) is lower than both P1 and P2 at both top and bottom.
+      */}
       <div className="grid grid-cols-[1fr_1.22fr_1fr] items-start gap-3 sm:gap-4 md:gap-5">
-        {/* P2 Step (Left - Stepped down from P1 at top & bottom) */}
+        {/* P2 Step (Left - Second position: shifted down from P1) */}
         {renderPodiumStep(
           p2,
           2,
@@ -140,14 +143,14 @@ export function Podium({ entries }: PodiumProps) {
           "border border-blue-500/50 shadow-blue-950/30 hover:border-blue-400",
           "h-7 px-2 text-xs sm:h-8 sm:px-2.5 bg-blue-600 text-white rounded-lg shadow-blue-600/40",
           "text-blue-100",
-          "h-48 sm:h-56 md:h-64 lg:h-72",
-          "h-32 sm:h-36 md:h-40",
+          commonImageHeight,
+          commonPedestalHeight,
           "2",
           "border-blue-500/60",
-          "translate-y-8 sm:translate-y-10 md:translate-y-12"
+          "translate-y-8 sm:translate-y-10 lg:translate-y-14"
         )}
 
-        {/* P1 Step (Center - Highest at top & bottom) */}
+        {/* P1 Step (Center - First position: highest at both top & bottom) */}
         {renderPodiumStep(
           p1,
           1,
@@ -156,14 +159,14 @@ export function Podium({ entries }: PodiumProps) {
           "border-2 border-red-500/90 shadow-2xl",
           "h-8 px-2.5 text-xs sm:h-10 sm:px-3.5 sm:text-base bg-gradient-to-r from-red-600 via-purple-600 to-blue-600 text-white rounded-xl shadow-red-600/50",
           "text-transparent bg-clip-text bg-gradient-to-r from-red-400 via-purple-200 to-blue-300 drop-shadow-[0_0_20px_rgba(225,6,0,0.6)]",
-          "h-60 sm:h-72 md:h-80 lg:h-92",
-          "h-40 sm:h-44 md:h-48",
+          commonImageHeight,
+          commonPedestalHeight,
           "1",
           "border-red-500/80 shadow-[0_0_12px_rgba(225,6,0,0.5)]",
           "translate-y-0"
         )}
 
-        {/* P3 Step (Right - Stepped down further at top & bottom) */}
+        {/* P3 Step (Right - Third position: lowest of both at top & bottom) */}
         {renderPodiumStep(
           p3,
           3,
@@ -172,11 +175,11 @@ export function Podium({ entries }: PodiumProps) {
           "border border-neutral-800 shadow-neutral-950/40 hover:border-neutral-700",
           "h-7 px-2 text-xs sm:h-8 sm:px-2.5 bg-neutral-800 border border-neutral-700 text-amber-400 rounded-lg shadow-neutral-900/50",
           "text-neutral-100",
-          "h-40 sm:h-48 md:h-52 lg:h-60",
-          "h-28 sm:h-32 md:h-36",
+          commonImageHeight,
+          commonPedestalHeight,
           "3",
           "border-amber-600/60",
-          "translate-y-16 sm:translate-y-20 md:translate-y-24"
+          "translate-y-16 sm:translate-y-20 lg:translate-y-28"
         )}
       </div>
     </div>
