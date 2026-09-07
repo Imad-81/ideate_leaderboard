@@ -1,6 +1,9 @@
 "use client";
 
 import React, { useState, useRef } from "react";
+import { useMutation } from "convex/react";
+import { api } from "@/convex/_generated/api";
+import { Id } from "@/convex/_generated/dataModel";
 import { Upload, X, Loader2, Camera, CheckCircle2 } from "lucide-react";
 
 interface ImageUploaderProps {
@@ -15,13 +18,15 @@ export function ImageUploader({
   label,
   value,
   onChange,
-  type = "car",
   aspectRatio = "wide",
 }: ImageUploaderProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
   const [isDragOver, setIsDragOver] = useState(false);
+
+  const generateUploadUrl = useMutation(api.results.generateUploadUrl);
+  const getStorageUrl = useMutation(api.results.getStorageUrl);
 
   const handleUploadFile = async (file: File) => {
     if (!file.type.startsWith("image/")) {
@@ -38,22 +43,30 @@ export function ImageUploader({
     setIsUploading(true);
     setUploadError(null);
 
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("type", type);
-
     try {
-      const res = await fetch("/api/upload", {
+      // 1. Get direct upload URL from Convex
+      const uploadUrl = await generateUploadUrl();
+
+      // 2. Post file directly from browser to Convex storage
+      const res = await fetch(uploadUrl, {
         method: "POST",
-        body: formData,
+        headers: { "Content-Type": file.type },
+        body: file,
       });
 
-      const data = await res.json();
-      if (!res.ok || !data.url) {
-        throw new Error(data.error || "Upload failed");
+      if (!res.ok) {
+        throw new Error("Failed to send image data to storage");
       }
 
-      onChange(data.url);
+      const { storageId } = (await res.json()) as { storageId: Id<"_storage"> };
+
+      // 3. Resolve permanent public HTTPS URL
+      const publicUrl = await getStorageUrl({ storageId });
+      if (!publicUrl) {
+        throw new Error("Could not resolve permanent image URL");
+      }
+
+      onChange(publicUrl);
     } catch (err: unknown) {
       setUploadError(err instanceof Error ? err.message : "Failed to upload image.");
     } finally {
