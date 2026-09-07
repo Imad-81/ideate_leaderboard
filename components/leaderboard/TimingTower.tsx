@@ -130,17 +130,17 @@ export function TimingTower({ entries, isFullscreen = false }: TimingTowerProps)
                 }}
                 className={`group relative overflow-hidden rounded-xl border transition-all duration-300 ${
                   isP1
-                    ? "border-red-500/80 bg-gradient-to-r from-red-950/40 via-neutral-900 to-neutral-950 shadow-lg shadow-red-950/40 hover:border-red-400"
+                    ? "border-red-500/70 bg-gradient-to-r from-red-950/40 via-neutral-900 to-blue-950/40 shadow-xl shadow-red-950/30 hover:border-blue-400"
                     : isP2
-                    ? "border-neutral-700 bg-neutral-900/80 hover:border-neutral-500"
+                    ? "border-blue-700/60 bg-gradient-to-r from-blue-950/30 via-neutral-900/80 to-neutral-950 hover:border-blue-500"
                     : isP3
-                    ? "border-neutral-700/80 bg-neutral-900/70 hover:border-neutral-500"
-                    : "border-neutral-800/80 bg-neutral-950/80 hover:border-neutral-700"
+                    ? "border-neutral-700/80 bg-neutral-900/70 hover:border-cyan-500/50"
+                    : "border-neutral-800/80 bg-neutral-950/80 hover:border-blue-500/30 hover:bg-neutral-900/60"
                 } ${isFullscreen ? "py-4 px-5" : "py-3 px-4"}`}
               >
-                {/* Subtle Left Accent Stripe for P1 */}
+                {/* Subtle Left Accent Stripe for P1 with Red & Blue gradient */}
                 {isP1 && (
-                  <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-red-600 shadow-[0_0_10px_#e10600]" />
+                  <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-gradient-to-b from-red-600 via-purple-600 to-blue-500 shadow-[0_0_12px_rgba(0,102,255,0.7)]" />
                 )}
 
                 {/* Desktop & TV Grid View */}
@@ -150,9 +150,11 @@ export function TimingTower({ entries, isFullscreen = false }: TimingTowerProps)
                     <span
                       className={`font-mono font-black tracking-tighter ${
                         isP1
-                          ? "text-red-500 text-3xl sm:text-4xl"
-                          : isP2 || isP3
-                          ? "text-neutral-100 text-2xl sm:text-3xl"
+                          ? "bg-gradient-to-br from-red-500 via-purple-300 to-blue-400 bg-clip-text text-transparent text-3xl sm:text-4xl"
+                          : isP2
+                          ? "text-blue-200 text-2xl sm:text-3xl"
+                          : isP3
+                          ? "text-amber-200 text-2xl sm:text-3xl"
                           : "text-neutral-300 text-xl sm:text-2xl"
                       }`}
                       style={{ fontFamily: "var(--font-racing), var(--font-mono)" }}
@@ -219,7 +221,7 @@ export function TimingTower({ entries, isFullscreen = false }: TimingTowerProps)
                     <div
                       className={`font-mono font-black tracking-tight ${
                         isP1
-                          ? "text-red-400 text-2xl sm:text-3xl drop-shadow-[0_0_8px_rgba(225,6,0,0.5)]"
+                          ? "text-transparent bg-clip-text bg-gradient-to-r from-red-400 via-purple-300 to-blue-400 text-2xl sm:text-3xl drop-shadow-[0_0_12px_rgba(0,102,255,0.5)]"
                           : "text-white text-xl sm:text-2xl"
                       }`}
                       style={{ fontFamily: "var(--font-racing), var(--font-mono)" }}

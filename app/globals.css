@@ -5,6 +5,9 @@
   --foreground: #f4f4f5;
   --f1-red: #e10600;
   --f1-red-glow: rgba(225, 6, 0, 0.4);
+  --f1-blue: #0066ff;
+  --f1-cyan: #00d2ff;
+  --f1-blue-glow: rgba(0, 102, 255, 0.4);
   --f1-gold: #ffd700;
   --f1-green: #00e676;
 }
@@ -24,17 +27,19 @@ body {
   overflow-x: hidden;
 }
 
-/* Carbon weave subtle background */
+/* Carbon weave subtle background with dual red & electric blue flares */
 .bg-carbon-pattern {
-  background-color: #09090c;
+  background-color: #08080b;
   background-image: 
-    radial-gradient(circle at 50% 0%, rgba(225, 6, 0, 0.08) 0%, transparent 60%),
+    radial-gradient(circle at 12% 15%, rgba(225, 6, 0, 0.12) 0%, transparent 45%),
+    radial-gradient(circle at 88% 18%, rgba(0, 102, 255, 0.15) 0%, transparent 45%),
+    radial-gradient(circle at 50% 65%, rgba(0, 210, 255, 0.06) 0%, transparent 60%),
     linear-gradient(45deg, rgba(255, 255, 255, 0.02) 25%, transparent 25%),
     linear-gradient(-45deg, rgba(255, 255, 255, 0.02) 25%, transparent 25%),
     linear-gradient(45deg, transparent 75%, rgba(255, 255, 255, 0.02) 75%),
     linear-gradient(-45deg, transparent 75%, rgba(255, 255, 255, 0.02) 75%);
-  background-size: 100% 100%, 16px 16px, 16px 16px, 16px 16px, 16px 16px;
-  background-position: 0 0, 0 0, 8px 0, 8px -8px, 0px 8px;
+  background-size: 100% 100%, 100% 100%, 100% 100%, 16px 16px, 16px 16px, 16px 16px, 16px 16px;
+  background-position: 0 0, 0 0, 0 0, 0 0, 8px 0, 8px -8px, 0px 8px;
 }
 
 /* Diagonal speed stripes */
@@ -99,6 +104,11 @@ body {
   box-shadow: 0 0 25px -3px rgba(225, 6, 0, 0.35), inset 0 0 15px -3px rgba(225, 6, 0, 0.2);
 }
 
+/* Dual Red & Blue high-voltage glow */
+.glow-red-blue {
+  box-shadow: -15px 0 35px -5px rgba(225, 6, 0, 0.25), 15px 0 35px -5px rgba(0, 102, 255, 0.25);
+}
+
 /* Glassmorphism panel */
 .telemetry-card {
   background: rgba(18, 18, 23, 0.75);
@@ -107,6 +117,6 @@ body {
 }
 
 .telemetry-card-p1 {
-  background: linear-gradient(135deg, rgba(26, 18, 18, 0.9) 0%, rgba(18, 18, 23, 0.85) 100%);
+  background: linear-gradient(135deg, rgba(26, 18, 22, 0.9) 0%, rgba(18, 20, 30, 0.85) 100%);
   border: 1px solid rgba(225, 6, 0, 0.4);
 }
