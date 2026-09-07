@@ -125,16 +125,17 @@ export function Podium({ entries }: PodiumProps) {
 
   const commonImageHeight = "h-52 sm:h-60 md:h-68 lg:h-76";
   const commonPedestalHeight = "h-36 sm:h-40 md:h-44";
+  // Symmetrical flanking offset for P2 (left) and P3 (right) so both cards sit at the exact same vertical & bottom level
+  const sideStepOffset = "translate-y-8 sm:translate-y-10 lg:translate-y-12";
 
   return (
-    <div className="w-full pb-24 sm:pb-32 lg:pb-36">
-      {/* 3 Stepped Podium Columns:
-          P1 is highest at both top and bottom.
-          P2 (second) is lower than P1 at both top and bottom.
-          P3 (third) is lower than both P1 and P2 at both top and bottom.
+    <div className="w-full pb-16 sm:pb-20 lg:pb-24">
+      {/* Symmetrical 3-Pillar Podium:
+          P1 is elevated in the center, standing out prominently.
+          P2 and P3 flank symmetrically at the exact same vertical and bottom level.
       */}
       <div className="grid grid-cols-[1fr_1.22fr_1fr] items-start gap-3 sm:gap-4 md:gap-5">
-        {/* P2 Step (Left - Second position: shifted down from P1) */}
+        {/* P2 Step (Left - Second position: symmetrical with P3) */}
         {renderPodiumStep(
           p2,
           2,
@@ -147,10 +148,10 @@ export function Podium({ entries }: PodiumProps) {
           commonPedestalHeight,
           "2",
           "border-blue-500/60",
-          "translate-y-8 sm:translate-y-10 lg:translate-y-14"
+          sideStepOffset
         )}
 
-        {/* P1 Step (Center - First position: highest at both top & bottom) */}
+        {/* P1 Step (Center - First position: elevated and standing out) */}
         {renderPodiumStep(
           p1,
           1,
@@ -166,7 +167,7 @@ export function Podium({ entries }: PodiumProps) {
           "translate-y-0"
         )}
 
-        {/* P3 Step (Right - Third position: lowest of both at top & bottom) */}
+        {/* P3 Step (Right - Third position: symmetrical with P2) */}
         {renderPodiumStep(
           p3,
           3,
@@ -179,7 +180,7 @@ export function Podium({ entries }: PodiumProps) {
           commonPedestalHeight,
           "3",
           "border-amber-600/60",
-          "translate-y-16 sm:translate-y-20 lg:translate-y-28"
+          sideStepOffset
         )}
       </div>
     </div>
