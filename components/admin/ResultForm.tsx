@@ -23,7 +23,6 @@ export function ResultForm({ onSuccess }: ResultFormProps) {
   const [driverImageUrl, setDriverImageUrl] = useState("");
   const [carImageUrl, setCarImageUrl] = useState("");
   const [status, setStatus] = useState<ResultStatus>("FINISHED");
-  const [runNumber, setRunNumber] = useState<string>("1");
   const [notes, setNotes] = useState("");
 
   // UI status states
@@ -79,7 +78,6 @@ export function ResultForm({ onSuccess }: ResultFormProps) {
         carImageUrl: carImageUrl.trim() || undefined,
         status,
         notes: notes.trim() || undefined,
-        runNumber: runNumber ? parseInt(runNumber, 10) : undefined,
       });
 
       // Show success notification
@@ -92,7 +90,6 @@ export function ResultForm({ onSuccess }: ResultFormProps) {
       setDriverImageUrl("");
       setCarImageUrl("");
       setStatus("FINISHED");
-      setRunNumber("1");
       setNotes("");
 
       if (onSuccess) onSuccess();
@@ -267,34 +264,18 @@ export function ResultForm({ onSuccess }: ResultFormProps) {
           />
         </div>
 
-        {/* Run # and Notes */}
-        <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
-          <div>
-            <label className="block font-mono text-xs font-bold uppercase tracking-wider text-neutral-300 mb-1.5">
-              RUN NUMBER
-            </label>
-            <input
-              type="number"
-              min="1"
-              max="10"
-              value={runNumber}
-              onChange={(e) => setRunNumber(e.target.value)}
-              className="w-full rounded-lg border border-neutral-700 bg-neutral-900/90 px-3.5 py-2 font-mono text-sm text-white focus:border-red-500 focus:outline-none"
-            />
-          </div>
-
-          <div className="sm:col-span-3">
-            <label className="block font-mono text-xs font-bold uppercase tracking-wider text-neutral-300 mb-1.5">
-              MARSHAL NOTES <span className="text-neutral-500">(OPTIONAL)</span>
-            </label>
-            <input
-              type="text"
-              value={notes}
-              onChange={(e) => setNotes(e.target.value)}
-              placeholder="e.g. Apex clip on Turn 2, strong straight line speed"
-              className="w-full rounded-lg border border-neutral-700 bg-neutral-900/90 px-3.5 py-2 font-mono text-xs text-white placeholder-neutral-500 focus:border-red-500 focus:outline-none"
-            />
-          </div>
+        {/* Marshal Notes */}
+        <div>
+          <label className="block font-mono text-xs font-bold uppercase tracking-wider text-neutral-300 mb-1.5">
+            MARSHAL NOTES <span className="text-neutral-500">(OPTIONAL)</span>
+          </label>
+          <input
+            type="text"
+            value={notes}
+            onChange={(e) => setNotes(e.target.value)}
+            placeholder="e.g. Apex clip on Turn 2, strong straight line speed"
+            className="w-full rounded-lg border border-neutral-700 bg-neutral-900/90 px-3.5 py-2 font-mono text-xs text-white placeholder-neutral-500 focus:border-red-500 focus:outline-none"
+          />
         </div>
 
         {/* Submit Action Button */}

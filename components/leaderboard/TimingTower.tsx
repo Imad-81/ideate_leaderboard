@@ -192,11 +192,9 @@ export function TimingTower({ entries, isFullscreen = false }: TimingTowerProps)
                         {renderStatusBadge(item.status)}
                       </div>
 
-                      {(item.teamName || item.runNumber) && (
+                      {item.teamName && (
                         <div className="flex items-center gap-2 font-mono text-xs text-neutral-400">
-                          {item.teamName && <span className="truncate">{item.teamName}</span>}
-                          {item.teamName && item.runNumber && <span className="text-neutral-600">•</span>}
-                          {item.runNumber && <span className="text-neutral-400">R#{item.runNumber}</span>}
+                          <span className="truncate">{item.teamName}</span>
                         </div>
                       )}
                     </div>

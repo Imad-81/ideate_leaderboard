@@ -115,7 +115,7 @@ export function Podium({ entries }: PodiumProps) {
                   FASTEST ON GRID
                 </span>
                 <span className="font-mono text-[11px] text-neutral-400">
-                  {p1.runNumber ? `Run #${p1.runNumber}` : "Official Run"}
+                  OFFICIAL BENCHMARK
                 </span>
               </div>
             </div>
