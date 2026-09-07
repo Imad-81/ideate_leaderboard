@@ -9,6 +9,8 @@ interface CarImageFallbackProps {
   type?: "car" | "driver";
   className?: string;
   containerClassName?: string;
+  iconClassName?: string;
+  hideLabel?: boolean;
 }
 
 export function CarImageFallback({
@@ -17,6 +19,8 @@ export function CarImageFallback({
   type = "car",
   className = "w-full h-full object-cover",
   containerClassName = "relative overflow-hidden rounded-md bg-neutral-900 border border-neutral-800",
+  iconClassName,
+  hideLabel = false,
 }: CarImageFallbackProps) {
   const [hasError, setHasError] = useState(false);
 
@@ -33,9 +37,9 @@ export function CarImageFallback({
           loading="lazy"
         />
       ) : type === "car" ? (
-        <div className="flex h-full w-full flex-col items-center justify-center bg-gradient-to-b from-neutral-900 to-neutral-950 p-2 text-neutral-500">
+        <div className="flex h-full w-full flex-col items-center justify-center bg-gradient-to-b from-neutral-900 to-neutral-950 p-4 text-neutral-500">
           <svg
-            className="h-7 w-7 stroke-neutral-600 transition-colors group-hover:stroke-red-500"
+            className={iconClassName || "h-7 w-7 stroke-neutral-600 transition-colors group-hover:stroke-red-500"}
             viewBox="0 0 24 24"
             fill="none"
             strokeWidth="1.5"
@@ -47,14 +51,16 @@ export function CarImageFallback({
             <path d="M9 17h6" />
             <circle cx="17" cy="17" r="2" />
           </svg>
-          <span className="mt-1 font-mono text-[9px] uppercase tracking-widest text-neutral-500">
-            RACE CAR
-          </span>
+          {!hideLabel && (
+            <span className="mt-2 font-mono text-[10px] uppercase tracking-widest text-neutral-500">
+              RACE CAR
+            </span>
+          )}
         </div>
       ) : (
-        <div className="flex h-full w-full flex-col items-center justify-center bg-gradient-to-b from-neutral-900 to-neutral-950 p-2 text-neutral-500">
+        <div className="flex h-full w-full flex-col items-center justify-center bg-gradient-to-b from-neutral-900 to-neutral-950 p-4 text-neutral-500">
           <svg
-            className="h-7 w-7 stroke-neutral-600 transition-colors group-hover:stroke-red-500"
+            className={iconClassName || "h-7 w-7 stroke-neutral-600 transition-colors group-hover:stroke-red-500"}
             viewBox="0 0 24 24"
             fill="none"
             strokeWidth="1.5"
@@ -65,9 +71,11 @@ export function CarImageFallback({
             <path d="M20 21a8 8 0 0 0-16 0" />
             <path d="M12 13v3" />
           </svg>
-          <span className="mt-1 font-mono text-[9px] uppercase tracking-widest text-neutral-500">
-            DRIVER
-          </span>
+          {!hideLabel && (
+            <span className="mt-2 font-mono text-[10px] uppercase tracking-widest text-neutral-500">
+              DRIVER
+            </span>
+          )}
         </div>
       )}
     </div>

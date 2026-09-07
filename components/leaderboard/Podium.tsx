@@ -4,14 +4,12 @@ import React from "react";
 import { LeaderboardEntry } from "@/lib/types";
 import { formatLapTime, formatGap } from "@/lib/time";
 import { CarImageFallback } from "@/components/common/CarImageFallback";
-import { Trophy, Flame } from "lucide-react";
 
 interface PodiumProps {
   entries: LeaderboardEntry[];
 }
 
 export function Podium({ entries }: PodiumProps) {
-  // Only show podium if we have at least 2 or 3 finished entries
   const finishedEntries = entries.filter((e) => e.status === "FINISHED");
   if (finishedEntries.length < 3) {
     return null;
@@ -21,223 +19,122 @@ export function Podium({ entries }: PodiumProps) {
   const p2 = finishedEntries[1];
   const p3 = finishedEntries[2];
 
-  return (
-    <div className="mb-10">
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center gap-2">
-          <div className="flex h-5 w-5 items-center justify-center rounded bg-gradient-to-r from-red-600 to-blue-600">
-            <Trophy className="h-3 w-3 text-white" />
+  const renderCard = (
+    entry: LeaderboardEntry,
+    pos: number,
+    posLabel: string,
+    isP1: boolean,
+    borderStyle: string,
+    badgeStyle: string,
+    timeGradient: string
+  ) => {
+    const imageUrl = entry.driverImageUrl || entry.carImageUrl;
+
+    return (
+      <div
+        className={`relative overflow-hidden rounded-2xl ${borderStyle} bg-neutral-950/90 shadow-2xl backdrop-blur-md flex flex-col transition-all duration-300 hover:scale-[1.01] ${
+          isP1
+            ? "order-1 md:order-2 md:-translate-y-4 z-10 glow-red-blue"
+            : pos === 2
+            ? "order-2 md:order-1"
+            : "order-3"
+        }`}
+      >
+        {/* Prominent Hero Image Container */}
+        <div className="relative w-full h-64 sm:h-72 md:h-80 bg-neutral-900 overflow-hidden">
+          <CarImageFallback
+            src={imageUrl}
+            alt={entry.participantName}
+            type={entry.carImageUrl && !entry.driverImageUrl ? "car" : "driver"}
+            containerClassName="w-full h-full"
+            iconClassName="h-20 w-20 stroke-neutral-600 group-hover:stroke-red-500"
+            className="w-full h-full object-cover object-top transition-transform duration-500 hover:scale-105"
+          />
+
+          {/* Bottom vignette gradient to blend seamlessly into card content */}
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/40 to-transparent" />
+
+          {/* Position Floating Badge (P1, P2, P3) */}
+          <div className="absolute top-3.5 left-3.5 z-10">
+            <span
+              className={`flex items-center justify-center font-mono font-black ${badgeStyle} shadow-lg`}
+              style={{ fontFamily: "var(--font-racing), var(--font-mono)" }}
+            >
+              {posLabel}
+            </span>
           </div>
-          <h3 className="font-mono text-sm font-bold uppercase tracking-widest text-neutral-300">
-            APEX PODIUM • <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-400 via-purple-300 to-blue-400">TOP 3 CONTENDERS</span>
-          </h3>
+
+          {/* Gap Badge (for P2 and P3) */}
+          {!isP1 && entry.gapMs !== null && (
+            <div className="absolute top-3.5 right-3.5 z-10">
+              <span className="rounded-lg bg-black/75 px-2.5 py-1 font-mono text-xs font-bold text-neutral-300 backdrop-blur-md border border-neutral-700/80 shadow-md">
+                {formatGap(entry.gapMs, false, entry.status)}
+              </span>
+            </div>
+          )}
         </div>
-        <div className="flex items-center gap-2">
-          <span className="h-1.5 w-8 rounded-full bg-gradient-to-r from-red-500 to-blue-500" />
+
+        {/* Info Area: Name & Time Only */}
+        <div className="p-6 pt-4 flex flex-col justify-between flex-1">
+          {/* Driver Name - Fully bold & prominent */}
+          <h3
+            className="font-mono font-black uppercase tracking-tight text-white text-2xl sm:text-3xl leading-tight mb-3 break-words"
+            style={{ fontFamily: "var(--font-racing), var(--font-mono)" }}
+          >
+            {entry.participantName}
+          </h3>
+
+          {/* Time - Giant, bold & high-contrast */}
+          <div className="pt-3 border-t border-neutral-800/80 flex items-baseline">
+            <div
+              className={`font-mono font-black tracking-tight ${timeGradient} ${
+                isP1 ? "text-4xl sm:text-5xl" : "text-3xl sm:text-4xl"
+              }`}
+              style={{ fontFamily: "var(--font-racing), var(--font-mono)" }}
+            >
+              {formatLapTime(entry.timeMs)}
+            </div>
+          </div>
         </div>
       </div>
+    );
+  };
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-5 items-end">
-        {/* P2 - Electric Sapphire Blue Position (Left) */}
-        <div className="order-2 md:order-1 relative rounded-xl border border-blue-500/50 bg-gradient-to-b from-blue-950/40 via-neutral-900/95 to-neutral-950 p-5 shadow-xl shadow-blue-950/30 backdrop-blur-md transition-all hover:border-blue-400 hover:shadow-blue-900/40">
-          <div className="flex items-start justify-between mb-4">
-            <div className="flex items-center gap-2">
-              <span className="flex h-7 w-7 items-center justify-center rounded bg-blue-950/80 font-mono text-xs font-bold text-blue-300 border border-blue-600/60 shadow-sm shadow-blue-600/30">
-                P2
-              </span>
-              <span className="font-mono text-[11px] uppercase tracking-wider text-blue-400 font-semibold">
-                SILVER • RUNNER UP
-              </span>
-            </div>
-            <span className="font-mono text-xs font-semibold text-blue-300">
-              {formatGap(p2.gapMs, false, p2.status)}
-            </span>
-          </div>
+  return (
+    <div className="mb-10 pt-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-end">
+        {/* P2 (Left) */}
+        {renderCard(
+          p2,
+          2,
+          "P2",
+          false,
+          "border border-blue-500/50 shadow-blue-950/30 hover:border-blue-400",
+          "h-9 px-3 text-sm bg-blue-600 text-white rounded-xl shadow-blue-600/40",
+          "text-blue-100"
+        )}
 
-          <div className="flex items-center gap-4 mb-4">
-            <CarImageFallback
-              src={p2.driverImageUrl}
-              alt={p2.participantName}
-              type="driver"
-              containerClassName="h-14 w-14 rounded-lg overflow-hidden border border-blue-500/60 bg-neutral-900 shadow-md shadow-blue-950/50"
-            />
-            <div className="overflow-hidden">
-              <h4
-                className="truncate font-mono text-lg font-black uppercase text-white"
-                style={{ fontFamily: "var(--font-racing), var(--font-mono)" }}
-              >
-                {p2.participantName}
-              </h4>
-              {p2.teamName && (
-                <p className="truncate font-mono text-xs text-blue-400/90 font-medium">
-                  {p2.teamName}
-                </p>
-              )}
-            </div>
-          </div>
+        {/* P1 (Center, Elevated) */}
+        {renderCard(
+          p1,
+          1,
+          "P1",
+          true,
+          "border-2 border-red-500/90 shadow-2xl",
+          "h-10 px-3.5 text-base bg-gradient-to-r from-red-600 via-purple-600 to-blue-600 text-white rounded-xl shadow-red-600/50",
+          "text-transparent bg-clip-text bg-gradient-to-r from-red-400 via-purple-200 to-blue-400 drop-shadow-[0_0_15px_rgba(0,102,255,0.6)]"
+        )}
 
-          {p2.carImageUrl && (
-            <div className="mb-4 h-24 w-full rounded-lg overflow-hidden border border-blue-900/50 bg-neutral-900">
-              <CarImageFallback
-                src={p2.carImageUrl}
-                alt={`${p2.participantName} car`}
-                type="car"
-                containerClassName="h-full w-full"
-              />
-            </div>
-          )}
-
-          <div className="flex items-baseline justify-between border-t border-blue-900/40 pt-3">
-            <span className="font-mono text-[10px] uppercase tracking-wider text-neutral-400">
-              LAP TIME
-            </span>
-            <span
-              className="font-mono text-2xl font-black text-blue-100"
-              style={{ fontFamily: "var(--font-racing), var(--font-mono)" }}
-            >
-              {formatLapTime(p2.timeMs)}
-            </span>
-          </div>
-        </div>
-
-        {/* P1 - Dual Red & Blue Apex Champion (Center, Elevated) */}
-        <div className="order-1 md:order-2 relative rounded-xl border-2 border-red-500/80 bg-gradient-to-b from-[#1c1117] via-neutral-950 to-[#0e1322] glow-red-blue p-6 backdrop-blur-md md:-translate-y-3 z-10">
-          {/* Dual Red & Blue Apex Badge */}
-          <div className="absolute -top-3 left-1/2 -translate-x-1/2 flex items-center gap-1.5 rounded-full bg-gradient-to-r from-red-600 via-purple-600 to-blue-600 px-3.5 py-0.5 shadow-lg shadow-red-600/40">
-            <Flame className="h-3.5 w-3.5 text-amber-200 fill-amber-200" />
-            <span className="font-mono text-[11px] font-black uppercase tracking-widest text-white">
-              LEADER P1 • APEX
-            </span>
-          </div>
-
-          <div className="flex items-start justify-between mt-2 mb-4">
-            <div className="flex items-center gap-2">
-              <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-red-600 to-red-800 font-mono text-base font-black text-white shadow-md shadow-red-600/50">
-                01
-              </span>
-              <div>
-                <span className="font-mono text-[10px] uppercase tracking-wider text-red-400 font-bold block">
-                  FASTEST ON GRID
-                </span>
-                <span className="font-mono text-[11px] text-neutral-400">
-                  OFFICIAL BENCHMARK
-                </span>
-              </div>
-            </div>
-            <div className="rounded border border-blue-500/40 bg-gradient-to-r from-red-950/40 to-blue-950/40 px-2.5 py-1 text-center shadow-sm">
-              <span className="font-mono text-xs font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-blue-300">
-                LEADER
-              </span>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-4 mb-4">
-            <CarImageFallback
-              src={p1.driverImageUrl}
-              alt={p1.participantName}
-              type="driver"
-              containerClassName="h-16 w-16 rounded-xl overflow-hidden border-2 border-red-500/90 ring-2 ring-blue-500/50 bg-neutral-900 shadow-xl shadow-red-900/50"
-            />
-            <div className="overflow-hidden">
-              <h4
-                className="truncate font-mono text-xl font-black uppercase text-white"
-                style={{ fontFamily: "var(--font-racing), var(--font-mono)" }}
-              >
-                {p1.participantName}
-              </h4>
-              {p1.teamName && (
-                <p className="truncate font-mono text-xs font-semibold text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-blue-300">
-                  {p1.teamName}
-                </p>
-              )}
-            </div>
-          </div>
-
-          {p1.carImageUrl && (
-            <div className="mb-4 h-28 w-full rounded-lg overflow-hidden border border-neutral-800 bg-neutral-900 shadow-inner">
-              <CarImageFallback
-                src={p1.carImageUrl}
-                alt={`${p1.participantName} car`}
-                type="car"
-                containerClassName="h-full w-full"
-              />
-            </div>
-          )}
-
-          <div className="flex items-baseline justify-between border-t border-neutral-800/90 pt-3">
-            <span className="font-mono text-[11px] uppercase tracking-wider text-neutral-300 font-bold">
-              BENCHMARK
-            </span>
-            <span
-              className="font-mono text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white via-red-200 to-blue-200 drop-shadow-[0_0_15px_rgba(225,6,0,0.6)]"
-              style={{ fontFamily: "var(--font-racing), var(--font-mono)" }}
-            >
-              {formatLapTime(p1.timeMs)}
-            </span>
-          </div>
-        </div>
-
-        {/* P3 - Bronze with Cyan Telemetry Accent (Right) */}
-        <div className="order-3 relative rounded-xl border border-neutral-700/70 bg-gradient-to-b from-neutral-900/90 to-neutral-950 p-5 shadow-lg backdrop-blur-md transition-all hover:border-cyan-500/40">
-          <div className="flex items-start justify-between mb-4">
-            <div className="flex items-center gap-2">
-              <span className="flex h-7 w-7 items-center justify-center rounded bg-neutral-800 font-mono text-xs font-bold text-neutral-300 border border-neutral-700">
-                P3
-              </span>
-              <span className="font-mono text-[11px] uppercase tracking-wider text-amber-500/90 font-semibold">
-                BRONZE
-              </span>
-            </div>
-            <span className="font-mono text-xs font-semibold text-neutral-300">
-              {formatGap(p3.gapMs, false, p3.status)}
-            </span>
-          </div>
-
-          <div className="flex items-center gap-4 mb-4">
-            <CarImageFallback
-              src={p3.driverImageUrl}
-              alt={p3.participantName}
-              type="driver"
-              containerClassName="h-14 w-14 rounded-lg overflow-hidden border border-neutral-700 bg-neutral-900"
-            />
-            <div className="overflow-hidden">
-              <h4
-                className="truncate font-mono text-lg font-black uppercase text-white"
-                style={{ fontFamily: "var(--font-racing), var(--font-mono)" }}
-              >
-                {p3.participantName}
-              </h4>
-              {p3.teamName && (
-                <p className="truncate font-mono text-xs text-neutral-400">
-                  {p3.teamName}
-                </p>
-              )}
-            </div>
-          </div>
-
-          {p3.carImageUrl && (
-            <div className="mb-4 h-24 w-full rounded-lg overflow-hidden border border-neutral-800 bg-neutral-900">
-              <CarImageFallback
-                src={p3.carImageUrl}
-                alt={`${p3.participantName} car`}
-                type="car"
-                containerClassName="h-full w-full"
-              />
-            </div>
-          )}
-
-          <div className="flex items-baseline justify-between border-t border-neutral-800/80 pt-3">
-            <span className="font-mono text-[10px] uppercase tracking-wider text-neutral-400">
-              LAP TIME
-            </span>
-            <span
-              className="font-mono text-2xl font-black text-neutral-100"
-              style={{ fontFamily: "var(--font-racing), var(--font-mono)" }}
-            >
-              {formatLapTime(p3.timeMs)}
-            </span>
-          </div>
-        </div>
+        {/* P3 (Right) */}
+        {renderCard(
+          p3,
+          3,
+          "P3",
+          false,
+          "border border-neutral-800 shadow-neutral-950/40 hover:border-neutral-700",
+          "h-9 px-3 text-sm bg-neutral-800 border border-neutral-700 text-amber-400 rounded-xl shadow-neutral-900/50",
+          "text-neutral-100"
+        )}
       </div>
     </div>
   );
