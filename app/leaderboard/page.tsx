@@ -1,16 +1,15 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
+import Link from "next/link";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { LeaderboardEntry } from "@/lib/types";
-import { RaceHeader } from "@/components/leaderboard/RaceHeader";
-import { FastestLapHero } from "@/components/leaderboard/FastestLapHero";
 import { Podium } from "@/components/leaderboard/Podium";
 import { TimingTower } from "@/components/leaderboard/TimingTower";
 import { NewFastestLapAlert } from "@/components/leaderboard/NewFastestLapAlert";
 import { EmptyState } from "@/components/leaderboard/EmptyState";
-import { Activity } from "lucide-react";
+import { Maximize2, Minimize2, SlidersHorizontal, Activity } from "lucide-react";
 
 export default function LeaderboardPage() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -21,8 +20,6 @@ export default function LeaderboardPage() {
 
   const leaderboardEntries = (data?.leaderboard || []) as LeaderboardEntry[];
   const fastestDriver = data?.fastestParticipant as LeaderboardEntry | null;
-  const totalCount = data?.totalCount || 0;
-  const finishedCount = data?.finishedCount || 0;
 
   // Handle browser Fullscreen API
   const handleToggleFullscreen = async () => {
@@ -57,16 +54,39 @@ export default function LeaderboardPage() {
       {/* Alert toast for new fastest lap */}
       <NewFastestLapAlert fastestDriver={fastestDriver} />
 
-      <div>
-        {/* Race Broadcast Header */}
-        <RaceHeader
-          isFullscreen={isFullscreen}
-          onToggleFullscreen={handleToggleFullscreen}
-          totalEntries={totalCount}
-        />
+      {/* Floating minimal utility controls (unobtrusive, replaces bulky navbar) */}
+      <div className="fixed top-4 right-4 z-40 flex items-center gap-2">
+        <button
+          onClick={handleToggleFullscreen}
+          className="flex h-8 items-center gap-1.5 rounded-lg border border-neutral-800 bg-neutral-950/80 px-2.5 font-mono text-[11px] text-neutral-400 backdrop-blur-md hover:border-neutral-600 hover:text-white transition-all shadow-md"
+          title={isFullscreen ? "Exit TV Mode" : "TV Mode"}
+        >
+          {isFullscreen ? (
+            <>
+              <Minimize2 className="h-3.5 w-3.5 text-red-400" />
+              <span className="hidden sm:inline">EXIT TV</span>
+            </>
+          ) : (
+            <>
+              <Maximize2 className="h-3.5 w-3.5" />
+              <span className="hidden sm:inline">TV MODE</span>
+            </>
+          )}
+        </button>
 
+        <Link
+          href="/admin"
+          className="flex h-8 items-center gap-1.5 rounded-lg border border-neutral-800 bg-neutral-950/80 px-2.5 font-mono text-[11px] text-neutral-400 backdrop-blur-md hover:border-red-500/50 hover:text-white transition-all shadow-md"
+          title="Race Control"
+        >
+          <SlidersHorizontal className="h-3.5 w-3.5 text-red-500" />
+          <span className="hidden sm:inline">CONTROL</span>
+        </Link>
+      </div>
+
+      <div>
         {/* Main Leaderboard Board Container */}
-        <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+        <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
           {data === undefined ? (
             /* High-tech Loading State */
             <div className="flex min-h-[450px] flex-col items-center justify-center gap-4">
@@ -84,12 +104,6 @@ export default function LeaderboardPage() {
           ) : (
             /* Active Live Board */
             <div>
-              {/* Broadcast Fastest Lap Banner */}
-              <FastestLapHero
-                fastestDriver={fastestDriver}
-                totalFinished={finishedCount}
-              />
-
               {/* Podium Section (P2 - P1 - P3) */}
               <Podium entries={leaderboardEntries} />
 
@@ -138,7 +152,9 @@ export default function LeaderboardPage() {
           <div className="flex items-center gap-4">
             <span>COLLEGE MOTORSPORT SERIES</span>
             <span className="text-neutral-700">•</span>
-            <span className="text-red-400">ROUND 01</span>
+            <Link href="/admin" className="text-neutral-400 hover:text-red-400 transition-colors">
+              RACE CONTROL
+            </Link>
           </div>
         </div>
       </footer>
