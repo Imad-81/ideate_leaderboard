@@ -74,11 +74,20 @@ export function ImageUploader({
     }
   };
 
+  const handleOpenPicker = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+      fileInputRef.current.click();
+    }
+  };
+
   const onFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files && files.length > 0) {
       handleUploadFile(files[0]);
     }
+    // Crucial: reset input value so re-selecting the same file fires onChange
+    e.target.value = "";
   };
 
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
@@ -128,7 +137,7 @@ export function ImageUploader({
           <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
             <button
               type="button"
-              onClick={() => fileInputRef.current?.click()}
+              onClick={handleOpenPicker}
               className="rounded bg-neutral-900/90 px-2 py-1 font-mono text-[10px] font-bold text-white hover:bg-neutral-800"
             >
               REPLACE
@@ -151,7 +160,7 @@ export function ImageUploader({
       ) : (
         /* Drag-and-Drop / Browse Dropzone */
         <div
-          onClick={() => fileInputRef.current?.click()}
+          onClick={handleOpenPicker}
           onDragOver={(e) => {
             e.preventDefault();
             setIsDragOver(true);
