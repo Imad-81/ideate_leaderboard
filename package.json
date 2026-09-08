@@ -6,9 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "seed:admin": "node --env-file=.env.local scripts/seed-admin.mjs"
   },
   "dependencies": {
+    "better-auth": "^1.7.3",
     "convex": "^1.45.0",
     "framer-motion": "^13.2.0",
     "lucide-react": "^1.42.0",

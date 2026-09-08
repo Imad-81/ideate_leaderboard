@@ -1,16 +1,42 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { SlidersHorizontal, Tv } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { SlidersHorizontal, Tv, LogOut, ShieldCheck, Loader2 } from "lucide-react";
 import { GridStats } from "@/lib/types";
 import { formatLapTime } from "@/lib/time";
+import { authClient } from "@/lib/auth-client";
 
 interface AdminHeaderProps {
   stats?: GridStats;
 }
 
 export function AdminHeader({ stats }: AdminHeaderProps) {
+  const router = useRouter();
+  const [session, setSession] = useState<{ user?: { name?: string | null; username?: string | null } } | null>(null);
+  const [isSigningOut, setIsSigningOut] = useState(false);
+
+  useEffect(() => {
+    authClient.getSession().then((res) => {
+      if (res?.data) {
+        setSession(res.data);
+      }
+    });
+  }, []);
+
+  const handleSignOut = async () => {
+    setIsSigningOut(true);
+    try {
+      await authClient.signOut();
+      router.push("/admin/login");
+      router.refresh();
+    } catch (err) {
+      console.error("Sign out error:", err);
+      setIsSigningOut(false);
+    }
+  };
+
   return (
     <header className="border-b border-neutral-800 bg-neutral-950/95 backdrop-blur-md">
       {/* Top red racing line */}
@@ -73,17 +99,52 @@ export function AdminHeader({ stats }: AdminHeaderProps) {
           </div>
         )}
 
-        {/* Right: Link to Public Broadcast Board */}
-        <div className="flex items-center gap-3">
+        {/* Right: User Status & Actions */}
+        <div className="flex items-center flex-wrap gap-2.5">
+          {/* Active Operator Status */}
+          {session?.user && (
+            <div className="flex items-center gap-2 rounded-lg border border-neutral-800 bg-neutral-900/80 px-3 py-1.5 font-mono text-xs text-neutral-300 backdrop-blur-sm">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+              </span>
+              <ShieldCheck className="h-3.5 w-3.5 text-emerald-400" />
+              <div className="flex items-center gap-1.5">
+                <span className="text-white font-bold">{session.user.name || "Marshal"}</span>
+                <span className="text-[10px] text-neutral-400">
+                  (@{(session.user as { username?: string }).username || "admin"})
+                </span>
+              </div>
+            </div>
+          )}
+
+          {/* Link to Public Broadcast Board */}
           <Link
             href="/leaderboard"
-            className="flex h-9 items-center gap-2 rounded-lg bg-red-600 px-4 font-mono text-xs font-bold uppercase tracking-wider text-white shadow-lg shadow-red-600/30 transition-all hover:bg-red-500 active:scale-95"
+            className="flex h-9 items-center gap-2 rounded-lg bg-neutral-800/80 hover:bg-neutral-700 px-3 font-mono text-xs font-bold uppercase tracking-wider text-neutral-200 border border-neutral-700/60 transition-all active:scale-95"
           >
-            <Tv className="h-4 w-4" />
-            <span>VIEW LIVE BOARD</span>
+            <Tv className="h-3.5 w-3.5 text-red-400" />
+            <span className="hidden sm:inline">LIVE BOARD</span>
           </Link>
+
+          {/* Sign Out Button */}
+          <button
+            type="button"
+            onClick={handleSignOut}
+            disabled={isSigningOut}
+            className="flex h-9 items-center gap-1.5 rounded-lg bg-red-600/20 hover:bg-red-600 hover:text-white border border-red-600/40 px-3 font-mono text-xs font-bold uppercase tracking-wider text-red-300 transition-all active:scale-95 cursor-pointer disabled:opacity-50"
+            title="Sign out of race control console"
+          >
+            {isSigningOut ? (
+              <Loader2 className="h-3.5 w-3.5 animate-spin" />
+            ) : (
+              <LogOut className="h-3.5 w-3.5" />
+            )}
+            <span>SIGN OUT</span>
+          </button>
         </div>
       </div>
     </header>
   );
 }
+
