@@ -1,7 +1,5 @@
-import React from "react";
-import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import { auth } from "@/lib/auth";
+import { isAuthenticated } from "@/lib/auth-server";
 import { AdminLoginForm } from "@/components/admin/AdminLoginForm";
 import { AnimatedBackground } from "@/components/common/AnimatedBackground";
 import { BrandCredit } from "@/components/common/BrandCredit";
@@ -13,11 +11,9 @@ export const metadata = {
 
 export default async function AdminLoginPage() {
   // Check if already authenticated
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
+  const authed = await isAuthenticated();
 
-  if (session) {
+  if (authed) {
     redirect("/admin");
   }
 

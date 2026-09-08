@@ -7,10 +7,11 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "seed:admin": "node --env-file=.env.local scripts/seed-admin.mjs"
+    "seed:admin": "npx convex run auth:seedAdmin"
   },
   "dependencies": {
-    "better-auth": "^1.7.3",
+    "@convex-dev/better-auth": "^0.12.5",
+    "better-auth": "~1.6.15",
     "convex": "^1.45.0",
     "framer-motion": "^13.2.0",
     "lucide-react": "^1.42.0",

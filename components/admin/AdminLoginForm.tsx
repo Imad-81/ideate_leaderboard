@@ -43,20 +43,14 @@ export function AdminLoginForm() {
     setIsLoading(true);
 
     try {
-      let result;
-      if (trimmedIdentifier.includes("@")) {
-        // Authenticate with email
-        result = await authClient.signIn.email({
-          email: trimmedIdentifier,
-          password,
-        });
-      } else {
-        // Authenticate with username
-        result = await authClient.signIn.username({
-          username: trimmedIdentifier,
-          password,
-        });
-      }
+      const email = trimmedIdentifier.includes("@")
+        ? trimmedIdentifier
+        : `${trimmedIdentifier.toLowerCase()}@racecontrol.io`;
+
+      const result = await authClient.signIn.email({
+        email,
+        password,
+      });
 
       if (result.error) {
         setErrorMessage(
